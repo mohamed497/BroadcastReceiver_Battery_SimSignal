@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.example.broadcastreceiver"
+        minSdk 22
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:${version_core}"
+    implementation "androidx.appcompat:appcompat:${version_appcompat}"
+    implementation "com.google.android.material:material:${version_material}"
+    implementation "androidx.constraintlayout:constraintlayout:${version_constraint_layout}"
+    implementation "androidx.legacy:legacy-support-v4:${version_legasy}"
+    testImplementation "junit:junit:${version_junit}"
+    androidTestImplementation "androidx.test.ext:junit:${version_junit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${version_espresso_core}"
+    implementation "androidx.viewpager2:viewpager2:${version_viewpager2}"
+
+}
