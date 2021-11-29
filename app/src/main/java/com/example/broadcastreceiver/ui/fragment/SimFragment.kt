@@ -43,7 +43,7 @@ class SimFragment : BaseFragment() {
                     val simState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         telephoneMgr.signalStrength?.gsmSignalStrength
                     } else {
-                        "Old Version"
+                        R.string.android_version
                     }
                     signalIdFragment.text = simState.toString()
                 }
@@ -53,11 +53,6 @@ class SimFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val intentFilter = IntentFilter(GlobalConstants.ACTION2)
-        context?.registerReceiver(super.broadcastReceiver, intentFilter)
-    }
 
 
 }

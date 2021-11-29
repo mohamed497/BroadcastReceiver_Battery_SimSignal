@@ -42,14 +42,10 @@ class BatteryFragment : BaseFragment() {
             }
 
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
         val intentFilter = IntentFilter(GlobalConstants.ACTION)
         context?.registerReceiver(super.broadcastReceiver, intentFilter)
     }
+
 
 
 }

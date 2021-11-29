@@ -20,11 +20,4 @@ class FirstActivity : AppCompatActivity() {
         view_pager.adapter = adapter
     }
 
-    override fun onBackPressed() {
-        if (view_pager.currentItem == 0) {
-            super.onBackPressed()
-        } else {
-            view_pager.currentItem = view_pager.currentItem - 1
-        }
-    }
 }
