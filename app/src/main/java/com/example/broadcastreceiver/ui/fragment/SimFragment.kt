@@ -17,14 +17,13 @@ import kotlinx.android.synthetic.main.fragment_battery.*
 import kotlinx.android.synthetic.main.fragment_battery.batteryIdFragment
 import kotlinx.android.synthetic.main.fragment_sim.*
 
-class SimFragment : BaseFragment() {
-//    private lateinit var signalBroadcastReceiver: BroadcastReceiver
+class SimFragment : Fragment() {
+    private lateinit var signalBroadcastReceiver: BroadcastReceiver
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sim, container, false)
     }
 
@@ -35,17 +34,19 @@ class SimFragment : BaseFragment() {
     }
 
     private fun setupSignalBroadcast() {
-        super.broadcastReceiver = object : BroadcastReceiver() {
+        signalBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == GlobalConstants.ACTION2) {
+                if (intent?.action == GlobalConstants.ACTION_SIM) {
                     val telephoneMgr =
                         context!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                    val simState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        telephoneMgr.signalStrength?.gsmSignalStrength
-                    } else {
-                        R.string.android_version
-                    }
-                    signalIdFragment.text = simState.toString()
+                    val simState =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            (telephoneMgr.signalStrength?.level).toString()
+                        } else {
+                            getString(R.string.android_version)
+                        }
+
+                    signalIdFragment.text = simState
                 }
 
             }
@@ -53,6 +54,16 @@ class SimFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val intentFilter = IntentFilter(GlobalConstants.ACTION_SIM)
 
+        context?.registerReceiver(signalBroadcastReceiver, intentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        context?.unregisterReceiver(signalBroadcastReceiver)
+    }
 
 }

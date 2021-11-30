@@ -8,23 +8,11 @@ import com.example.broadcastreceiver.ui.fragment.SimFragment
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
+    private val fragments = arrayOf(BatteryFragment(), SimFragment())
 
-    override fun getItemCount(): Int {
-        return 2
-    }
+    override fun getItemCount(): Int = fragments.size
 
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> {
-                BatteryFragment()
-            }
-            1 -> {
-                SimFragment()
-            }
-            else -> {
-                BatteryFragment()
-            }
-        }
-    }
+
+    override fun createFragment(position: Int): Fragment = fragments[position]
 
 }

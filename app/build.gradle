@@ -35,14 +35,17 @@ android {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:${version_core}"
-    implementation "androidx.appcompat:appcompat:${version_appcompat}"
-    implementation "com.google.android.material:material:${version_material}"
-    implementation "androidx.constraintlayout:constraintlayout:${version_constraint_layout}"
-    implementation "androidx.legacy:legacy-support-v4:${version_legasy}"
-    testImplementation "junit:junit:${version_junit}"
-    androidTestImplementation "androidx.test.ext:junit:${version_junit}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${version_espresso_core}"
-    implementation "androidx.viewpager2:viewpager2:${version_viewpager2}"
+    implementation supportDependencies.coreKtx
+    implementation supportDependencies.junit
+    implementation supportDependencies.material
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.constraintLayout
+    testImplementation supportDependencies.junit
+    androidTestImplementation supportDependencies.testJunit
+    androidTestImplementation supportDependencies.espressoCore
+    implementation supportDependencies.picasso
+    implementation supportDependencies.viewpager
+    implementation supportDependencies.fragmentKtx
+
 
 }
