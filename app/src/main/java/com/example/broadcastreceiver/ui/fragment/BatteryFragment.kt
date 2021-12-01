@@ -11,22 +11,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.example.broadcastreceiver.R
 import kotlinx.android.synthetic.main.fragment_battery.*
 import com.example.broadcastreceiver.base.GlobalConstants
-import com.example.broadcastreceiver.ui.viewmodel.ItemViewModel
+import com.example.broadcastreceiver.ui.fragment.broadcasts.BatteryBroadcast
 
 
-class BatteryFragment : Fragment() {
-    private val viewModel: ItemViewModel by activityViewModels()
-    private lateinit var batteryBroadcastReceiver: BroadcastReceiver
+class BatteryFragment : Fragment(), BatteryBroadcast.BatteryCallback {
+    private lateinit var batteryBroadcastReceiver: BatteryBroadcast
+    lateinit var callBack: ItemCallBack
+    lateinit var batteryCallback: BatteryBroadcast.BatteryCallback
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         return inflater.inflate(R.layout.fragment_battery, container, false)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        callBack = activity as ItemCallBack
+        batteryCallback = this
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,18 +45,8 @@ class BatteryFragment : Fragment() {
     }
 
     private fun setupBatteryBroadcast() {
-        batteryBroadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == GlobalConstants.ACTION_BATTERY) {
-                    val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-                    Log.d(BatteryFragment::class.java.simpleName, "onReceive battery $level")
-                    batteryIdFragment.text = level.toString().plus(" ").plus("%")
-                }
-            }
-
-        }
+        batteryBroadcastReceiver = BatteryBroadcast(batteryCallback = batteryCallback)
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -61,7 +58,17 @@ class BatteryFragment : Fragment() {
         super.onPause()
         context?.unregisterReceiver(batteryBroadcastReceiver)
     }
-    fun onItemClicked(item: String){
-        viewModel.selectItem(item)
+
+    private fun onItemClicked(title: String) {
+        callBack.onClickItem(title)
+    }
+
+    interface ItemCallBack {
+        fun onClickItem(title: String)
+    }
+
+
+    override fun onBatteryChanged(battery: Int?) {
+        batteryIdFragment.text = battery.toString().plus(" ").plus("%")
     }
 }
